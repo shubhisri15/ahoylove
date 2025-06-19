@@ -1,6 +1,6 @@
 import React from 'react';
-import useShipDataFromScraper from "./useShipDataFromScraper";
-import useLocationAndWeatherFromLatLong from "./useLocationAndWeatherFromLatLong";
+import useShipDataFromScraper from "./hooks/useShipDataFromScraper";
+import useLocationAndWeatherFromLatLong from "./hooks/useLocationAndWeatherFromLatLong";
 
 export default function App() {
     const { shipData, loading, error } = useShipDataFromScraper();
