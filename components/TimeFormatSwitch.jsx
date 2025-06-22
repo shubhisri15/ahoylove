@@ -102,6 +102,11 @@ const IOSSwitch = styled((props) => (
   },
 }));
 
-export default function TimeFormatSwitch() {
-    return <IOSSwitch sx={{ m: 1 }} defaultChecked inputProps={{ 'aria-label': 'Switch time format' }}/>
+export default function TimeFormatSwitch({checked, setChecked}) {
+    return <IOSSwitch 
+        sx={{ m: 1 }} 
+        inputProps={{ 'aria-label': 'Switch time format' }} 
+        checked={checked}
+        onChange={(e) => setChecked(e.target.checked)}
+    />
 }

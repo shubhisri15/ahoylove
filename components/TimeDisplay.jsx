@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from "react";
 import TimeFormatSwitch from "./TimeFormatSwitch";
 
+function getTimeDifference(offset) {
+  
+  const localTimezoneOffset = new Date().getTimezoneOffset()
+  const targetTimezoneOffset = -offset / 60
+  const diffMins = targetTimezoneOffset - localTimezoneOffset
+
+  const hourDiff = Math.floor(Math.abs(diffMins) / 60);
+  const minDiff = Math.abs(diffMins) % 60;
+  const ahead = diffMins < 0;
+
+  return `${hourDiff}h ${minDiff}m ${ahead ? 'ahead of' : 'behind'} you`;
+}
+
 function getTimeFromTimezone(timezoneOffsetSeconds, hour12 = false) {
   const offset = Number(timezoneOffsetSeconds);
   if (isNaN(offset)) {
@@ -23,29 +36,33 @@ function getTimeFromTimezone(timezoneOffsetSeconds, hour12 = false) {
   const hh = String(hours).padStart(2, '0');
   const mm = String(targetTime.getUTCMinutes()).padStart(2, '0');
 
-  return hour12 ? `${hh}:${mm} ${ampm}` : `${hh}:${mm}`;
+  const displayedTime = hour12 ? <h1>{`${hh}:${mm}`}<span className='text-4xl'>{`${ampm}`}</span></h1> : <h1>{`${hh}:${mm}`}</h1>;
+  const timeDifferenceString = getTimeDifference(offset)
+
+  return { displayedTime, timeDifferenceString }
 }
 
-export default function TimeDisplay({ timezoneOffsetSeconds, hour12 = false }) {
+export default function TimeDisplay({ timezoneOffsetSeconds }) {
 
+  const [format12hChecked, setFormat12hChecked] = useState(false);
   const [time, setTime] = useState(() =>
-    getTimeFromTimezone(timezoneOffsetSeconds, hour12)
+    getTimeFromTimezone(timezoneOffsetSeconds, format12hChecked).displayedTime
   );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime(getTimeFromTimezone(timezoneOffsetSeconds, hour12));
+      setTime(getTimeFromTimezone(timezoneOffsetSeconds, format12hChecked).displayedTime);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timezoneOffsetSeconds, hour12]);
+  }, [timezoneOffsetSeconds, format12hChecked]);
 
   return (
     <div>
       {time}
       <div className="flex items-center justify-center gap-4">
-        <p className='text-sm py-2'>Adi is 10h 30m behind you</p>
-        <TimeFormatSwitch />
+        <p className='text-sm py-2'>Adi is {getTimeFromTimezone(timezoneOffsetSeconds, format12hChecked).timeDifferenceString}</p>
+        <TimeFormatSwitch checked={format12hChecked} setChecked={setFormat12hChecked}/>
       </div>
     </div>);
 }

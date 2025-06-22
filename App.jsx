@@ -24,7 +24,11 @@ export default function App() {
                 </div>
                 <div><img src={logo} alt='Ahoylove logo' className='w-40'/></div>
             </div>
-            <div className='text-9xl'><TimeDisplay timezoneOffsetSeconds={location?.timezone} /></div>
+            <div className='text-9xl'>
+                <TimeDisplay 
+                    timezoneOffsetSeconds={location?.timezone}   
+                />
+            </div>
             <div className="flex justify-between w-full">
                 <EditDashboardButton />
                 <div>Homecoming</div>
