@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+input {
+    border: 1px solid #929292;
+    border-radius: 8px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 200px
+}
+
+label {
+    font-weight: light;
+    color: #4a4a4a;
+    padding-bottom: 4px
+}
