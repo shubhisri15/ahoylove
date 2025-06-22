@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import TimeFormatSwitch from "./TimeFormatSwitch";
 
 function getTimeFromTimezone(timezoneOffsetSeconds, hour12 = false) {
   const offset = Number(timezoneOffsetSeconds);
   if (isNaN(offset)) {
-    console.error('timezoneOffsetSeconds must be a valid number');
+    console.warn('timezoneOffsetSeconds must be a valid number');
     return `Loading time..`
   }
 
@@ -26,6 +27,7 @@ function getTimeFromTimezone(timezoneOffsetSeconds, hour12 = false) {
 }
 
 export default function TimeDisplay({ timezoneOffsetSeconds, hour12 = false }) {
+
   const [time, setTime] = useState(() =>
     getTimeFromTimezone(timezoneOffsetSeconds, hour12)
   );
@@ -38,5 +40,12 @@ export default function TimeDisplay({ timezoneOffsetSeconds, hour12 = false }) {
     return () => clearInterval(interval);
   }, [timezoneOffsetSeconds, hour12]);
 
-  return <div>{time}</div>;
+  return (
+    <div>
+      {time}
+      <div className="flex items-center justify-center gap-4">
+        <p className='text-sm py-2'>Adi is 10h 30m behind you</p>
+        <TimeFormatSwitch />
+      </div>
+    </div>);
 }
