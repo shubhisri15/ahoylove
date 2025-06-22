@@ -29,17 +29,19 @@ export default function useLocationAndWeatherFromLatLong(lat, lon) {
                     setError('Invalid coordinates');
                     return;
                 }
-                
+                console.log(lat, lon)
                 const response = await axios.get(
                     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=c9f4237f8c649b4f5882df003fb89f2d`
                 );
                 
                 if (response.data) {
                     const data = response.data;
+                    console.log(data)
                     setLocation({
                         country: new Intl.DisplayNames(['en'], { type: 'region' }).of(data.sys.country),
                         city: data.name,
                         temp: data.main.temp,
+                        timezone: data.timezone,
                         icon: data.weather.icon
                     });
                 } else {
