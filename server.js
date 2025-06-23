@@ -12,6 +12,11 @@ socket.onopen = function (_) {
 
 socket.onmessage = function (event) {
     let aisMessage = JSON.parse(event.data)
-    console.log(aisMessage["MetaData"]["MMSI_String"])
-    socket.close()
+    const mmsi = aisMessage?.MetaData?.MMSI_String;
+    console.log(mmsi)
+    
+    if (mmsi === 538006490) {
+        console.log("Found target ship!", aisMessage);
+        socket.close();
+    }
 };

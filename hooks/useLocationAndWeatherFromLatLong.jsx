@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 
 export default function useLocationAndWeatherFromLatLong(lat, lon) {
-    const regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
     const [location, setLocation] = useState(
         {
-            country: null,
-            city: null,
             temp: null,
+            timezone: null,
             icon: null
         }
     )
@@ -36,11 +34,9 @@ export default function useLocationAndWeatherFromLatLong(lat, lon) {
                 if (response.data) {
                     const data = response.data;
                     setLocation({
-                        country: new Intl.DisplayNames(['en'], { type: 'region' }).of(data.sys.country),
-                        city: data.name,
                         temp: data.main.temp,
                         timezone: data.timezone,
-                        icon: data.weather.icon
+                        icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
                     });
                 } else {
                     setError('Location not found');

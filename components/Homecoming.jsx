@@ -1,3 +1,3 @@
 export default function Homecoming() {
-    return <div>Homecoming</div>
+    return <div className='hidden md:block'>Homecoming</div>
 }

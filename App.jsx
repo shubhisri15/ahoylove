@@ -18,22 +18,23 @@ export default function App() {
 
     if (loading) return <p>Loading ship data...</p>;
     if (error) return <p>Error: {error}</p>;
-    if (locationLoading) return <p>Loading location...</p>;
+    if (locationLoading) return <p>Loading location info...</p>;
     if (locationError) return <p>Location error: {locationError}</p>;
 
     return (
-        <div className='flex flex-col justify-between items-center h-screen bg-linear-to-b from-slate-950 to-indigo-900 text-white p-8'>
-            <div className="flex justify-between w-full items-start">
-                <div className='flex flex-col'>
-                    <Location city={location?.city} country={location?.country} name='Adi' />
-                    <Weather temperature={location?.temp} />
+        <div className='flex flex-col justify-between items-center h-screen w-screen bg-linear-to-b from-slate-950 to-indigo-900 text-white md:p-8 p-4'>
+            <div className="flex flex-col md:flex-row justify-between items-center md:items-start w-full">
+                <img src={logo} alt='Ahoylove logo' className="w-32 mb-4 md:mb-0 md:order-2" />
+                <div className="flex flex-col items-center md:items-start md:order-1">
+                    <Location destination={shipData?.destination} lastUpdated={shipData?.lastUpdated} name='Adi' />
+                    <Weather temperature={location?.temp} icon={location?.icon}/>
                 </div>
-                <img src={logo} alt='Ahoylove logo' className='w-40'/>
             </div>
-            <div className='text-9xl'>
+
+            <div className='md:text-9xl text-8xl text-center'>
                 <TimeDisplay timezoneOffsetSeconds={location?.timezone} />
             </div>
-            <div className="flex justify-between w-full items-end">
+            <div className="flex justify-center md:justify-between w-full items-end">
                 <EditDashboardButton onClick={() => setIsModalOpen(true)}/>
                 <Homecoming />
             </div>

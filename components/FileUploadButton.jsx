@@ -19,14 +19,14 @@ export default function FileUploadButton() {
         {/* Upload file button */}
         <div
           onClick={handleClick}
-          className="flex items-center gap-2 cursor-pointer border border-gray-300 px-2 py-1 w-5/6 rounded-md shadow-sm hover:bg-gray-50 transition ml-2"
+          className="flex items-center gap-2 cursor-pointer border border-gray-300 px-2 py-1 w-5/6 min-w-1/2 rounded-md shadow-sm hover:bg-gray-50 transition ml-2"
         >
           <img src={uploadIcon} alt="Upload" className="w-4 h-4" />
           <span className="text-blue-500 text-xs">Upload file</span>
         </div>
 
         {/* File name display */}
-        <p className="text-black text-sm font-medium truncate max-w-[150px] text-right">
+        <p className="text-black text-xs ml-4 truncate max-w-[150px]">
           {fileName || ""}
         </p>
 

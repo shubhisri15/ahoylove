@@ -5,7 +5,8 @@ export default function useShipDataFromScraper() {
     const [shipData, setShipData] = useState({ 
         lat: null, 
         lon: null,
-        lastUpdated: null
+        lastUpdated: null,
+        destinationPort: null
     });
 
     const [error, setError] = useState(null);
@@ -20,21 +21,37 @@ export default function useShipDataFromScraper() {
 
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(response.data, 'text/html');
+
             const djsonElement = htmlDoc.getElementById('djson');
+            const destinationLabel = Array.from(htmlDoc.querySelectorAll('div.vilabel')).find(
+                el => el.textContent.trim() === 'Destination'
+            );
+
+            let destination = null;
+
+            if (destinationLabel) {
+                const destinationElement = destinationLabel.nextElementSibling;
+                if (destinationElement && destinationElement.tagName === 'A') {
+                    destination = destinationElement.textContent.trim();
+                }
+            } else {
+                setError('Destination port info not found.')
+            }
 
             if (djsonElement) {
-            const jsonString = djsonElement.getAttribute('data-json');
-            
-            if (jsonString) {
-                const data = JSON.parse(jsonString);
-                setShipData({
-                    lat: data.ship_lat,
-                    lon: data.ship_lon,
-                    lastUpdated: data.lrpd
-                });
-            } else {
-                setError('No data-json attribute found');
-            }
+                const jsonString = djsonElement.getAttribute('data-json');
+                
+                if (jsonString) {
+                    const data = JSON.parse(jsonString);
+                    setShipData({
+                        lat: data.ship_lat,
+                        lon: data.ship_lon,
+                        lastUpdated: data.lrpd,
+                        destination: destination
+                    });
+                } else {
+                    setError('No data-json attribute found');
+                }
             } else {
                 setError('Element with id "djson" not found');
             }

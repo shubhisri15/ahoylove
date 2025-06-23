@@ -60,8 +60,8 @@ export default function TimeDisplay({ timezoneOffsetSeconds }) {
   return (
     <div>
       {time}
-      <div className="flex items-center justify-center gap-4">
-        <p className='text-sm py-2'>Adi is {getTimeFromTimezone(timezoneOffsetSeconds, format12hChecked).timeDifferenceString}</p>
+      <div className="flex items-center justify-center md:gap-4 gap-2">
+        <p className='md:text-sm py-2 text-xs'>Adi is {getTimeFromTimezone(timezoneOffsetSeconds, format12hChecked).timeDifferenceString}</p>
         <TimeFormatSwitch checked={format12hChecked} setChecked={setFormat12hChecked}/>
       </div>
     </div>);
