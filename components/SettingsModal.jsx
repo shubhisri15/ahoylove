@@ -25,7 +25,6 @@ export default function SettingsModal({onClose, onSave}) {
 
     function handleSubmit(event) {
         event.preventDefault()
-        console.log('formData:', formData)
         onSave(formData)
         onClose()
     }
