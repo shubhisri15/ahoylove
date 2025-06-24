@@ -14,25 +14,31 @@ import Loading from './components/Loading';
 
 export default function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [userSettings, setUserSettings] = useState(null)
-
-    useEffect(() => {
-        chrome.storage.local.get(['userSettings'], (result) => {
-            if (result.userSettings) {
-            setUserSettings(result.userSettings);
-            }
-        });
-    }, []);
-
+    const [userSettings, setUserSettings] = useState(null);
     const prevUserSettingsRef = useRef();
 
+   // Request user settings from content/background script
     useEffect(() => {
-    // Avoid saving on first mount or if no actual changes
+        window.postMessage({ type: "GET_USER_SETTINGS" }, "*");
+
+        const handleMessage = (event) => {
+            if (event.data?.type === "USER_SETTINGS_RESPONSE") {
+                setUserSettings(event.data.payload);
+                prevUserSettingsRef.current = event.data.payload;
+            }
+        };
+
+        window.addEventListener("message", handleMessage);
+        return () => window.removeEventListener("message", handleMessage);
+    }, []);
+
+    // Update storage via message
+    useEffect(() => {
         if (
             userSettings &&
             JSON.stringify(userSettings) !== JSON.stringify(prevUserSettingsRef.current)
         ) {
-            chrome.storage.local.set({ userSettings });
+            window.postMessage({ type: "UPDATE_USER_SETTINGS", userSettings }, "*");
             prevUserSettingsRef.current = userSettings;
         }
     }, [userSettings]);

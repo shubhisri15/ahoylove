@@ -7,8 +7,21 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base: './',
   build: {
-    outDir: 'dist', // <- important
-    emptyOutDir: true
+    outDir: 'dist', 
+    emptyOutDir: true,
+    rollupOptions: {
+      input: './index.jsx',
+      output: {
+        entryFileNames: 'ahoylove.js',
+        assetFileNames: (chunkInfo) => {
+          if (chunkInfo.name.includes('ahoylove')) {
+            return 'assets/[name][extname]'; // no hash for logo
+          }
+          return 'assets/[name]-[hash][extname]';
+        }
+      }
+    }
   }
 });
