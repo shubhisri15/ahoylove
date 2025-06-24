@@ -3,8 +3,8 @@ This project is still WIP
 AhoyLove is a short and sweet way of always being able to feel close to your long distance partner. 
 This is a web-app / chrome extension that displays your maritime officer's current location (based on their ship MMSI or IMO number), their timezone, the weather at their location and time left to homecoming. 
 
-- Uses the aisstream.io Websocket API to get real time position report for the ship, and the Abstract Web Scraping API as backup in case the websocket API is unable to fetch info.
-  (Not ideal, but hey I am trying to save some serious money!)
+- (NOT APPLICABLE AT THE MOMENT, THE AISSTREAM API DOES NOT WORK SO PRIMARILY USING DATA FROM THE SCRAPER) Uses the aisstream.io Websocket API to get real time position report for the ship, and the Abstract Web Scraping API as backup in case the websocket API is unable to fetch info. (Not ideal, but hey I am trying to save some serious money!)
+
 - Uses the OpenWeatherAPI to get the location, weather and timezone information for the given latitude and longitude (obtained from the ship data)
 
 Tech stack used: React.js, TailwindCSS, Javascript, Node.js, HTML+CSS
