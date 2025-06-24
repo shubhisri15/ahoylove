@@ -42,7 +42,7 @@ function getTimeFromTimezone(timezoneOffsetSeconds, hour12 = false) {
   return { displayedTime, timeDifferenceString }
 }
 
-export default function TimeDisplay({ timezoneOffsetSeconds }) {
+export default function TimeDisplay({ timezoneOffsetSeconds, displayName }) {
 
   const [format12hChecked, setFormat12hChecked] = useState(false);
   const [time, setTime] = useState(() =>
@@ -61,7 +61,7 @@ export default function TimeDisplay({ timezoneOffsetSeconds }) {
     <div>
       {time}
       <div className="flex items-center justify-center md:gap-4 gap-2">
-        <p className='md:text-sm py-2 text-xs'>Adi is {getTimeFromTimezone(timezoneOffsetSeconds, format12hChecked).timeDifferenceString}</p>
+        <p className='md:text-sm py-2 text-xs'>{displayName} is {getTimeFromTimezone(timezoneOffsetSeconds, format12hChecked).timeDifferenceString}</p>
         <TimeFormatSwitch checked={format12hChecked} setChecked={setFormat12hChecked}/>
       </div>
     </div>);

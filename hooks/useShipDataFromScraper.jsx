@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function useShipDataFromScraper() {
+export default function useShipDataFromScraper(imo) {
     const [shipData, setShipData] = useState({ 
         lat: null, 
         lon: null,
@@ -16,7 +16,7 @@ export default function useShipDataFromScraper() {
 
     async function fetchData() {
         try {
-            const url = "https://scrape.abstractapi.com/v1/?api_key=58e2d8e03eef4a3fa28930635d37f271&url=https://www.vesselfinder.com/vessels/details/9692351";
+            const url = `https://scrape.abstractapi.com/v1/?api_key=58e2d8e03eef4a3fa28930635d37f271&url=https://www.vesselfinder.com/vessels/details/${imo}`;
             const response = await axios.get(url);
 
             const parser = new DOMParser();
@@ -31,9 +31,7 @@ export default function useShipDataFromScraper() {
 
             if (destinationLabel) {
                 const destinationElement = destinationLabel.nextElementSibling;
-                if (destinationElement && destinationElement.tagName === 'A') {
-                    destination = destinationElement.textContent.trim();
-                }
+                destination = destinationElement.textContent.trim();   
             } else {
                 setError('Destination port info not found.')
             }
@@ -47,7 +45,7 @@ export default function useShipDataFromScraper() {
                         lat: data.ship_lat,
                         lon: data.ship_lon,
                         lastUpdated: data.lrpd,
-                        destination: destination
+                        destinationPort: destination
                     });
                 } else {
                     setError('No data-json attribute found');
