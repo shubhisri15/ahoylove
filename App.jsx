@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import useShipDataFromScraper from "./hooks/useShipDataFromScraper";
 import useLocationAndWeatherFromLatLong from "./hooks/useLocationAndWeatherFromLatLong";
 import TimeDisplay from './components/TimeDisplay';
@@ -15,6 +15,27 @@ import Loading from './components/Loading';
 export default function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userSettings, setUserSettings] = useState(null)
+
+    useEffect(() => {
+        chrome.storage.local.get(['userSettings'], (result) => {
+            if (result.userSettings) {
+            setUserSettings(result.userSettings);
+            }
+        });
+    }, []);
+
+    const prevUserSettingsRef = useRef();
+
+    useEffect(() => {
+    // Avoid saving on first mount or if no actual changes
+        if (
+            userSettings &&
+            JSON.stringify(userSettings) !== JSON.stringify(prevUserSettingsRef.current)
+        ) {
+            chrome.storage.local.set({ userSettings });
+            prevUserSettingsRef.current = userSettings;
+        }
+    }, [userSettings]);
 
     const { shipData, loading, error } = useShipDataFromScraper(userSettings?.imo);
     const { location, loading: locationLoading, error: locationError } = useLocationAndWeatherFromLatLong(shipData.lat, shipData.lon);
@@ -59,7 +80,7 @@ export default function App() {
                 <EditDashboardButton onClick={() => setIsModalOpen(true)} buttonText='Edit Dashboard'/>
                 <Homecoming />
             </div>
-            {isModalOpen && <SettingsModal onClose={() => setIsModalOpen(false)} onSave={handleSave}/>}
+            {isModalOpen && <SettingsModal onClose={() => setIsModalOpen(false)} onSave={handleSave} data={userSettings}/>}
         </div>
     )
 
