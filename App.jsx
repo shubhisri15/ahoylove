@@ -14,34 +14,17 @@ import Loading from './components/Loading';
 
 export default function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [userSettings, setUserSettings] = useState(null);
-    const prevUserSettingsRef = useRef();
 
-   // Request user settings from content/background script
+    const [userSettings, setUserSettings] = useState(() => {
+        const stored = localStorage.getItem('userSettings');
+        return stored && stored !== 'undefined' ? JSON.parse(stored) : null;
+    });
+
     useEffect(() => {
-        window.postMessage({ type: "GET_USER_SETTINGS" }, "*");
-
-        const handleMessage = (event) => {
-            if (event.data?.type === "USER_SETTINGS_RESPONSE") {
-                setUserSettings(event.data.payload);
-                prevUserSettingsRef.current = event.data.payload;
-            }
-        };
-
-        window.addEventListener("message", handleMessage);
-        return () => window.removeEventListener("message", handleMessage);
-    }, []);
-
-    // Update storage via message
-    useEffect(() => {
-        if (
-            userSettings &&
-            JSON.stringify(userSettings) !== JSON.stringify(prevUserSettingsRef.current)
-        ) {
-            window.postMessage({ type: "UPDATE_USER_SETTINGS", userSettings }, "*");
-            prevUserSettingsRef.current = userSettings;
+        if (userSettings) {
+            localStorage.setItem('userSettings', JSON.stringify(userSettings))
         }
-    }, [userSettings]);
+    }, [userSettings])
 
     const { shipData, loading, error } = useShipDataFromScraper(userSettings?.imo);
     const { location, loading: locationLoading, error: locationError } = useLocationAndWeatherFromLatLong(shipData.lat, shipData.lon);
