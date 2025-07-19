@@ -19,7 +19,7 @@ export default function useShipDataFromScraper(imo) {
 
         async function fetchData() {
             try {
-                const url = `https://scrape.abstractapi.com/v1/?api_key=58e2d8e03eef4a3fa28930635d37f271&url=https://www.vesselfinder.com/vessels/details/${imo}`;
+                const url = `http://localhost:3001/api/scrape?imo=${imo}`;
                 const response = await axios.get(url);
 
                 const parser = new DOMParser();
