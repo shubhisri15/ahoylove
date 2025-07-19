@@ -1,4 +1,4 @@
-Deployed with love for you to try at: https://ahoylove.netlify.app/
+Deployed with love for you to try at: https://ahoylove.netlify.app/ (please run node new-server.js on your terminal before you access the netlify link, this is only a temporary inconvenience till the backend is fixed and prod ready)
 
 AhoyLove is a short and sweet way of always being able to feel close to your long distance partner. 
 This is a web-app that displays your maritime officer's current location (based on their ship MMSI or IMO number), their timezone, the weather at their location and time left to homecoming. 
